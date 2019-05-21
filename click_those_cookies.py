@@ -5,24 +5,25 @@
 
 import itertools
 import os
+from time import sleep
 
 import pyautogui
 
 
 def locate_item(item):
     clicks_ = {
-        "cookie_big.png": 4000,
-        "cookie_golden.png": 2,
-        "cookie_cause_golden.png": 1,
+        "cookie_big.png": 8_000,
+        "cookie_bonus.png": 2,
     }
 
     old_loc = pyautogui.position()
     new_loc = pyautogui.locateOnScreen(f"./data/{item}", grayscale=True, )
-    new_loc = new_loc if new_loc is not None else (254, 884)
+    if new_loc is not None:
+        loc = new_loc[0]/2, new_loc[1]/2
+        pyautogui.click(loc, clicks=clicks_.get(item, 0), interval=0.005)
+        pyautogui.moveTo(old_loc[0], old_loc[1])
 
-    loc = new_loc[0]/2, new_loc[1]/2
-    pyautogui.click(loc, clicks=clicks_.get(item, 4_000), interval=0.007)
-    pyautogui.moveTo(old_loc[0], old_loc[1])
+    sleep(1)
 
 
 if __name__ == "__main__":
